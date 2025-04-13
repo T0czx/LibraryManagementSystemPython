@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block content %}
+<h2>Edit Book</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ book['title'] }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="author" class="form-label">Author</label>
+        <input type="text" class="form-control" id="author" name="author" value="{{ book['author'] }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="genre" class="form-label">Genre</label>
+        <select class="form-select" id="genre" name="genre" required>
+            {% for genre in genres %}
+            <option value="{{ genre }}" {% if genre == book.get('genre', 'Unknown') %}selected{% endif %}>{{ genre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Book</button>
+    <a href="{{ url_for('admin_dashboard', tab='manage-books') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

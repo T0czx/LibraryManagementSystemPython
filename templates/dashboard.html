@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user['IDNumber'] }} (Student)</h2>
+<a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+
+<!-- Search Form with Genre Dropdown -->
+<form method="GET" class="mt-3">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="search" placeholder="Search by title, author, or genre" value="{{ search_query }}">
+        <select name="genre" class="form-select" onchange="this.form.submit()">
+            <option value="">All Genres</option>
+            {% for genre in genres %}
+            <option value="{{ genre }}" {% if genre == selected_genre %}selected{% endif %}>{{ genre }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<!-- Choices Bar -->
+{% if suggestions %}
+<div class="choices-bar mb-3">
+    <h5>Suggestions:</h5>
+    <div class="d-flex flex-wrap">
+        {% for suggestion in suggestions %}
+        <form method="GET" action="{{ url_for('dashboard') }}" class="me-2 mb-2">
+            <input type="hidden" name="search" value="{{ suggestion['title'] }}">
+            <button type="submit" class="btn btn-outline-primary btn-sm">
+                {{ suggestion['title'] }} by {{ suggestion['author'] }} ({{ suggestion.get('genre', 'Unknown') }})
+            </button>
+        </form>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Conference Rooms Section -->
+<h3>Conference Rooms</h3>
+<div class="row mb-4">
+    {% for room in conference_room_statuses %}
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ room['room_name'] }}</h5>
+                <p class="card-text">
+                    <strong>Status:</strong> {{ room['current_status'] }}
+                </p>
+                {% if room['reservations'] %}
+                <p class="card-text">
+                    <strong>Reservations for Tomorrow:</strong>
+                    <ul>
+                        {% for res in room['reservations'] %}
+                        <li>
+                            Reserved by {{ res['reserved_by'] }} for {{ res['time_frame'] }}
+                            {% if res['reserved_by'] == user['IDNumber'] %}
+                            <form action="{{ url_for('cancel_conference_reservation', room_id=room['room_id']) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </p>
+                {% endif %}
+                {% if room.get('next_available_slot') %}
+                <p class="card-text">
+                    <strong>Next Available Slot:</strong> {{ room['next_slot_str'] }} - {{ room['next_slot_end'] }}
+                </p>
+                <form action="{{ url_for('reserve_conference_room', room_id=room['room_id']) }}" method="POST">
+                    <input type="hidden" name="reservation_date" value="{{ tomorrow_date }}">
+                    <button type="submit" class="btn btn-success">Reserve</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h3>Available Books</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book['title'] }}</td>
+            <td>{{ book['author'] }}</td>
+            <td>{{ book.get('genre', 'Unknown') }}</td>
+            <td>{{ book['status'] }}</td>
+            <td>
+                {% if book['status'] == 'available' %}
+                <form action="{{ url_for('reserve_book', book_id=book['_id']) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-success btn-sm">Reserve</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Your Books</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Status</th>
+            <th>Time Remaining</th>
+            <th>Late Fee (if overdue)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in student_books %}
+        <tr>
+            <td>{{ book['title'] }}</td>
+            <td>{{ book['author'] }}</td>
+            <td>{{ book.get('genre', 'Unknown') }}</td>
+            <td>{{ book['status'] }}</td>
+            <td>{{ book['timing_info']['remaining_str'] }}</td>
+            <td>
+                {% if book['status'] == 'borrowed' and book['timing_info']['has_expired'] %}
+                ₱{{ book['timing_info']['late_fee'] }}
+                {% else %}
+                N/A
+                {% endif %}
+            </td>
+            <td>
+                {% if book['status'] == 'reserved' and not book['timing_info']['has_expired'] %}
+                <form action="{{ url_for('cancel_book_reservation', book_id=book['_id']) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Cancel Reservation</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

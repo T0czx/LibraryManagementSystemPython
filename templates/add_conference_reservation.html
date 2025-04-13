@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Conference Room Reservation{% endblock %}
+
+{% block content %}
+<h2>Add Reservation for {{ room['room_name'] }}</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="student_id" class="form-label">Student ID</label>
+        <select class="form-select" id="student_id" name="student_id" required>
+            <option value="">Select a student</option>
+            {% for student in students %}
+            <option value="{{ student['IDNumber'] }}">{{ student['IDNumber'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="reservation_date" class="form-label">Reservation Date</label>
+        <input type="date" class="form-control" id="reservation_date" name="reservation_date" required>
+    </div>
+    <div class="mb-3">
+        <label for="start_time" class="form-label">Start Time (e.g., 14:30 for 2:30 PM)</label>
+        <input type="time" class="form-control" id="start_time" name="start_time" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Reservation</button>
+    <a href="{{ url_for('admin_dashboard', tab='conference-rooms') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

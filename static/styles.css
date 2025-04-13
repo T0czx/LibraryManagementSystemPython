@@ -1,0 +1,117 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Header Styling */
+.header {
+    background-color: #800000; /* Maroon */
+    color: #FFD700; /* Gold */
+    padding: 20px;
+    text-align: center;
+    border-bottom: 5px solid #FFD700; /* Gold underline */
+    position: relative;
+    overflow: hidden;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Wavy effect for header */
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,215,0,0.2)" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,138.7C672,128,768,160,864,186.7C960,213,1056,235,1152,213.3C1248,192,1344,128,1392,96L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') repeat-x;
+    background-size: cover;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #800000; /* Maroon */
+    border-color: #800000;
+}
+
+.btn-primary:hover {
+    background-color: #660000; /* Darker maroon */
+    border-color: #660000;
+}
+
+.btn-secondary {
+    background-color: #FFD700; /* Gold */
+    border-color: #FFD700;
+    color: #800000; /* Maroon text */
+}
+
+.btn-secondary:hover {
+    background-color: #E6C200; /* Darker gold */
+    border-color: #E6C200;
+    color: #800000;
+}
+
+/* Container Styling */
+.container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 2px solid #FFD700; /* Gold border */
+    border-radius: 10px;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Wavy effect for container */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,215,0,0.1)" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,138.7C672,128,768,160,864,186.7C960,213,1056,235,1152,213.3C1248,192,1344,128,1392,96L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') repeat-x;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.container > * {
+    position: relative;
+    z-index: 1;
+}
+/* Choices Bar Styling */
+.choices-bar {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #FFD700; /* Gold border */
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.choices-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,215,0,0.1)" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,138.7C672,128,768,160,864,186.7C960,213,1056,235,1152,213.3C1248,192,1344,128,1392,96L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') repeat-x;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.choices-bar > * {
+    position: relative;
+    z-index: 1;
+}
